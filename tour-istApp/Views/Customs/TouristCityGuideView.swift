@@ -1,10 +1,15 @@
 import SwiftUI
 
-struct TouristCityGuideView: View {
-    var body: some View {
-        NavigationView {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 20) {
+struct TouristCityGuideView: View
+{
+    var body: some View
+    {
+        NavigationView
+        {
+            ScrollView
+            {
+                VStack(alignment: .leading, spacing: 20)
+                {
                     Text("Şehir Rehberi: İstanbul")
                         .font(.largeTitle)
                         .fontWeight(.bold)
@@ -15,13 +20,15 @@ struct TouristCityGuideView: View {
 
                     Divider()
 
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading)
+                    {
                         Text("Gidilecek Yerler")
                             .font(.title2)
                             .fontWeight(.bold)
 
                         ForEach(places, id: \.self) { place in
-                            HStack {
+                            HStack
+                            {
                                 Image(systemName: "pin.fill")
                                     .foregroundColor(.blue)
                                 Text(place)
@@ -32,13 +39,17 @@ struct TouristCityGuideView: View {
 
                     Divider()
 
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading)
+                    {
                         Text("Önerilen Aktiviteler")
                             .font(.title2)
                             .fontWeight(.bold)
 
-                        ForEach(activities, id: \.self) { activity in
-                            HStack {
+                        ForEach(activities, id: \.self)
+                        {
+                            activity in
+                            HStack
+                            {
                                 Image(systemName: "star.fill")
                                     .foregroundColor(.orange)
                                 Text(activity)
@@ -49,7 +60,8 @@ struct TouristCityGuideView: View {
 
                     Divider()
 
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading)
+                    {
                         Text("Şehir Hakkında")
                             .font(.title2)
                             .fontWeight(.bold)

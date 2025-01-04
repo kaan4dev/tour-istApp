@@ -51,7 +51,7 @@ struct MainTabView: View {
                         .sheet(isPresented: $showCreatePost, onDismiss: {
                             selectedTab = 0
                         }) {
-                            AddNewPost(isPresented: $showCreatePost)
+                            AddNewPostView(isPresented: $showCreatePost)
                         }
                 } else {
                     MapView()

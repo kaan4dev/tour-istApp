@@ -4,7 +4,7 @@ import FirebaseAuth
 
 struct TouristHomePage: View
 {
-    // MARK: - Properties
+    // properties
     @State var user: UserModel
     @State private var searchText: String = ""
     @State private var selectedTab: Int = 0
@@ -16,24 +16,24 @@ struct TouristHomePage: View
 
     private let db = Firestore.firestore()
 
-    // MARK: - Body
+    // body
     var body: some View
     {
         NavigationView
         {
             VStack
             {
-                headSection(user: user)
+                headerSection(user: user)
                 Divider()
                 middleSection
                 Divider()
-                postList
+                postListView
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .onAppear(perform: loadPosts)
             .sheet(isPresented: $showAddNewPost)
             {
-                AddNewPost(isPresented: $showAddNewPost)
+                AddNewPostView(isPresented: $showAddNewPost)
             }
             .sheet(isPresented: $isProfileSheetPresented)
             {
@@ -48,11 +48,10 @@ struct TouristHomePage: View
     }
 }
 
-// MARK: - Extensions for View Sections
 private extension TouristHomePage
 {
-    // MARK: - Head Section
-    func headSection(user: UserModel) -> some View
+    // header
+    func headerSection(user: UserModel) -> some View
     {
         HStack
         {
@@ -71,7 +70,7 @@ private extension TouristHomePage
         .frame(maxWidth: .infinity, alignment: .top)
     }
 
-    // MARK: Profile Button
+    // profile button
     func profileButton(user: UserModel) -> some View
     {
         Button(action: { isProfileSheetPresented.toggle() })
@@ -96,18 +95,18 @@ private extension TouristHomePage
         }
     }
 
-    // MARK: - Middle Section
+    // middle
     var middleSection: some View
     {
         VStack
         {
             SearchBar(text: $searchText)
                 .padding()
-            filterButtons
+            filterButtonsView
         }
     }
 
-    // MARK: Filter Button
+    // filter button the function
     func filterButton(title: String, tab: Int) -> some View
     {
         Button(action: { selectedTab = tab })
@@ -118,8 +117,8 @@ private extension TouristHomePage
         }
     }
 
-    // MARK: Filter Buttons
-    var filterButtons: some View
+    // filter buttons view
+    var filterButtonsView: some View
     {
         HStack
         {
@@ -136,21 +135,21 @@ private extension TouristHomePage
         }
     }
     
-    // MARK: Post List
-    var postList: some View
+    // post list
+    var postListView: some View
     {
         List(selectedTab == 0 ? posts : myPosts)
         { post in
             NavigationLink(destination: TouristPostDetailView(post: post))
             {
-                PostRow(post: post)
+                PostRowView(post: post)
             }
         }
         .listStyle(PlainListStyle())
     }
 
     
-    // MARK: Notification Button
+    // notification button
     var notificationButton: some View
     {
         Button(action: { isNotificationSheetPresented.toggle() })
@@ -162,7 +161,7 @@ private extension TouristHomePage
         .padding(.trailing)
     }
 
-    // MARK: Load Posts
+    // load posts the function
     func loadPosts()
     {
         guard let currentUser = Auth.auth().currentUser else
@@ -207,8 +206,8 @@ private extension TouristHomePage
     }
 }
 
-// MARK: - Post Row
-struct PostRow: View
+// post row
+struct PostRowView: View
 {
     let post: PostModel
 

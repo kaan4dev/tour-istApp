@@ -1,7 +1,8 @@
 import SwiftUI
 import Combine
 
-struct LocationNewsView: View {
+struct LocationNewsView: View
+{
     @State private var location: String = ""
     @State private var news: [NewsItem] = []
     @State private var isLoading: Bool = false

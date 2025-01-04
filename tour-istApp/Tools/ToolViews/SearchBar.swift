@@ -1,9 +1,8 @@
 import SwiftUI
 
-// MARK: - SearchBar Component
 struct SearchBar: View
 {
-    // MARK: Properties
+    // properties
     @Binding var text: String
 
     var body: some View
@@ -30,7 +29,7 @@ struct SearchBar: View
         }
     }
 
-    // MARK: - Magnifying Glass Icon
+    // magnifying glass icon
     private var magnifyingGlassIcon: some View
     {
         Image(systemName: "magnifyingglass")
@@ -39,7 +38,7 @@ struct SearchBar: View
             .padding(.leading, 8)
     }
 
-    // MARK: - Clear Button
+    // clear button
     private var clearButton: some View
     {
         Button(action: clearSearchText)
@@ -50,17 +49,16 @@ struct SearchBar: View
         }
     }
 
-    // MARK: - Actions
+    // clear search text
     private func clearSearchText()
     {
         text = ""
     }
 }
 
-// MARK: - Preview Container
+// preview
 struct SearchBarPreviewContainer: View
 {
-    // MARK: State
     @State private var searchText = ""
 
     var body: some View
@@ -71,10 +69,4 @@ struct SearchBarPreviewContainer: View
             Text("Search text: \(searchText)")
         }
     }
-}
-
-// MARK: - Preview
-#Preview
-{
-    SearchBarPreviewContainer()
 }

@@ -3,19 +3,19 @@ import FirebaseFirestore
 
 struct GuideHomePage: View
 {
-    // MARK: - Properties
+    // properties
     let user: UserModel
     @State private var searchText = ""
     @State private var selectedTab = 0
     @State private var isProfileSheetPresented = false
     @State private var isNotificationSheetPresented = false
-    @State private var isSettingsSheetPresented = false // Ayarlar için yeni state
+    @State private var isSettingsSheetPresented = false
     @State private var posts: [PostModel] = []
     @State private var errorMessage: String?
 
     private let db = Firestore.firestore()
 
-    // MARK: - Body
+    // body
     var body: some View
     {
         NavigationView
@@ -59,7 +59,7 @@ struct GuideHomePage: View
     }
 }
 
-// MARK: - Header View
+// header
 extension GuideHomePage
 {
     struct HeaderView: View
@@ -67,7 +67,7 @@ extension GuideHomePage
         let user: UserModel
         @Binding var isProfileSheetPresented: Bool
         @Binding var isNotificationSheetPresented: Bool
-        @Binding var isSettingsSheetPresented: Bool // Yeni prop eklendi
+        @Binding var isSettingsSheetPresented: Bool
 
         var body: some View
         {
@@ -90,9 +90,8 @@ extension GuideHomePage
 
                 Spacer()
 
-                HStack(spacing: 16) // Ayarlar ve bildirim simgeleri arasına boşluk
+                HStack(spacing: 16)
                 {
-                    // Bildirim Butonu
                     Button(action: { isNotificationSheetPresented.toggle() })
                     {
                         Image(systemName: "bell")
@@ -100,7 +99,6 @@ extension GuideHomePage
                             .foregroundColor(.blue)
                     }
 
-                    // Ayarlar Butonu
                     Button(action: { isSettingsSheetPresented.toggle() })
                     {
                         Image(systemName: "gearshape")
@@ -114,7 +112,7 @@ extension GuideHomePage
         }
     }
 
-    // MARK: - Profile Button
+    // profile button
     struct ProfileButton: View
     {
         let imageURL: String?
@@ -143,7 +141,7 @@ extension GuideHomePage
         }
     }
 
-    // MARK: - Middle Section
+    // middle
     struct MiddleSectionView: View
     {
         @Binding var searchText: String
@@ -171,7 +169,7 @@ extension GuideHomePage
         }
     }
 
-    // MARK: - Tab Button
+    // tab button
     struct TabButton: View
     {
         let title: String
@@ -190,7 +188,7 @@ extension GuideHomePage
         }
     }
 
-    // MARK: - Post List View
+    // post list view
     struct PostListView: View
     {
         let posts: [PostModel]
@@ -209,7 +207,7 @@ extension GuideHomePage
         }
     }
 
-    // MARK: - Post Row
+    // post row
     struct PostRow: View
     {
         let post: PostModel
@@ -255,7 +253,7 @@ extension GuideHomePage
         }
     }
 
-    // MARK: - Fetch Posts
+    // fetch posts the function
     private func fetchPosts()
     {
         db.collection("posts").getDocuments

@@ -1,11 +1,13 @@
 import SwiftUI
 
-// MARK: - Full Details Sheet
-struct FullDetailsSheet: View
+struct FullDetailsPage: View
 {
+    //instances
     @Binding var isFullDetailsPresented: Bool
 
     var post: PostModel
+    
+    //body
     var body: some View
     {
         VStack
@@ -13,7 +15,8 @@ struct FullDetailsSheet: View
             HStack
             {
                 Spacer()
-                Button(action: {
+                Button(action:
+                {
                     isFullDetailsPresented.toggle()
                 })
                 {
@@ -98,7 +101,7 @@ struct FullDetailsSheet: View
 
 #Preview
 {
-    FullDetailsSheet(
+    FullDetailsPage(
         isFullDetailsPresented: .constant(true),
         post: PostModel(
             id: "1",

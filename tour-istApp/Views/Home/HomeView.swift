@@ -2,12 +2,13 @@ import SwiftUI
 
 struct HomeView: View
 {
-    // MARK: - Properties
+    // properties
     var user: UserModel?
 
+    //instances
     @State private var showSplash = true
 
-    // MARK: - Body
+    // body
     var body: some View
     {
         ZStack
@@ -55,6 +56,7 @@ struct HomeView: View
     }
 }
 
+// splash screen
 struct SplashScreenView: View
 {
     var body: some View

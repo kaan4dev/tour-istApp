@@ -3,13 +3,13 @@ import MapKit
 
 struct GuidePostDetailView: View
 {
-    // MARK: - Variables
+    // variables
     var post: PostModel
     @State private var coordinate = CLLocationCoordinate2D(latitude: 41.2867, longitude: 36.33)
     @State private var annotation: LocationAnnotation?
     @State private var isFullDetailsPresented = false
     
-    // MARK: - Body
+    // body
     var body: some View
     {
         GeometryReader
@@ -31,11 +31,11 @@ struct GuidePostDetailView: View
         }
         .sheet(isPresented: $isFullDetailsPresented)
         {
-            FullDetailsSheet(isFullDetailsPresented: $isFullDetailsPresented, post: post)
+            FullDetailsPage(isFullDetailsPresented: $isFullDetailsPresented, post: post)
         }
     }
 
-    // MARK: - Geocode the Location
+    // geocode the location datas.
     private func geocodeLocation(_ location: String)
     {
         let geocoder = CLGeocoder()
@@ -56,14 +56,14 @@ struct GuidePostDetailView: View
         }
     }
 
-    // MARK: - Post Details View
+    // post details view
     private func postDetailsView(geometry: GeometryProxy) -> some View {
         VStack(alignment: .leading)
         {
             HStack(spacing: 16)
             {
-                postInfo
-                postImage
+                postInfoView
+                postImageView
             }
             .frame(maxWidth: .infinity, maxHeight: geometry.size.height * 0.4)
             .padding(.bottom, 20)
@@ -71,8 +71,8 @@ struct GuidePostDetailView: View
         .frame(maxWidth: .infinity)
     }
 
-    // MARK: - Post Info
-    private var postInfo: some View
+    // post info view
+    private var postInfoView: some View
     {
         VStack(alignment: .leading, spacing: 10)
         {
@@ -118,11 +118,16 @@ struct GuidePostDetailView: View
         }
     }
 
-    // MARK: - Post Image
-    private var postImage: some View {
-        Group {
-            if let imageURL = post.imageURL, let url = URL(string: imageURL) {
-                AsyncImage(url: url) { image in
+    // post image view
+    private var postImageView: some View
+    {
+        Group
+        {
+            if let imageURL = post.imageURL, let url = URL(string: imageURL)
+            {
+                AsyncImage(url: url)
+                {
+                    image in
                     image
                         .resizable()
                         .scaledToFill()
@@ -130,7 +135,9 @@ struct GuidePostDetailView: View
                         .frame(width: 150, height: 150)
                         .overlay(Circle().stroke(Color.gray, lineWidth: 4))
                         .shadow(radius: 7)
-                } placeholder: {
+                }
+                placeholder:
+                {
                     ProgressView()
                         .frame(width: 150, height: 150)
                 }
@@ -139,7 +146,7 @@ struct GuidePostDetailView: View
         }
     }
 
-    // MARK: - Map View
+    // map view
     private func mapView(geometry: GeometryProxy) -> some View
     {
         Map(coordinateRegion: .constant(MKCoordinateRegion(
@@ -155,7 +162,7 @@ struct GuidePostDetailView: View
         .padding(.top, 10)
     }
 
-    // MARK: - Action Buttons View
+    // action buttons view
     private func actionButtonsView(geometry: GeometryProxy) -> some View
     {
         HStack(spacing: 0) {
@@ -175,7 +182,7 @@ struct GuidePostDetailView: View
         .frame(maxWidth: 300, maxHeight: 100)
     }
 
-    // MARK: - Message Button
+    // message Button
     private var messageButton: some View
     {
         Button(action: {})
@@ -196,7 +203,7 @@ struct GuidePostDetailView: View
         .background(Color.blue)
     }
 
-    // MARK: - Apply Button
+    // apply button
     private var applyButton: some View
     {
         Button(action: {})
@@ -217,7 +224,7 @@ struct GuidePostDetailView: View
         .background(Color.blue)
     }
 
-    // MARK: - Phone Button
+    // phone button
     private var phoneButton: some View
     {
         Button(action: {})

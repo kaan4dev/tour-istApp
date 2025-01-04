@@ -2,7 +2,7 @@ import SwiftUI
 
 struct GuideTravelHistory: View
 {
-    // MARK: - Data
+    // example data
     let pastTours: [Tour] =
     [
         Tour(title: "Samsun Gezisi", date: "1 Eylül 2024"),
@@ -11,19 +11,20 @@ struct GuideTravelHistory: View
         Tour(title: "Antalya Plajı", date: "29 Eylül 2024")
     ]
     
-    // MARK: - Body
+    // body
     var body: some View
     {
         NavigationView
         {
             List(pastTours, id: \.title)
-            { tour in
+            {
+                tour in
                 tourRowView(tour: tour)
             }
             .navigationTitle("Geçmiş Etkinlikler")
         }
     }
-    // MARK: - Tour Row View
+    // tour row view
     private func tourRowView(tour: Tour) -> some View
     {
         HStack
@@ -41,7 +42,7 @@ struct GuideTravelHistory: View
         .padding()
     }
 }
-// MARK: - Tour Model
+// tour model for example.
 struct Tour
 {
     let title: String

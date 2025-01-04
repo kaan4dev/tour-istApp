@@ -1,18 +1,20 @@
 import Foundation
 import FirebaseFirestore
 
-class UserService {
-    // MARK: - Properties and Instance
+class UserService
+{
+    // instances
     static let shared = UserService()
-    
+
     private let db = Firestore.firestore()
     
-    // MARK: - Register User
-    func registerUser(user: UserModel, completion: @escaping (Error?) -> Void) {
+    // register user
+    func registerUser(user: UserModel, completion: @escaping (Error?) -> Void)
+    {
         let userRef = db.collection("users").document(user.id)
         
-        // Prepare user data based on the updated UserModel
-        let userData: [String: Any] = [
+        let userData: [String: Any] =
+        [
             "id": user.id,
             "name": user.name,
             "email": user.email,
@@ -28,7 +30,9 @@ class UserService {
             "usersLocation": user.usersLocation,
             "usersDegree": user.usersDegree,
             "knownLanguages": user.knownLanguages,
-            "travelHistory": user.travelHistory.map { travel in
+            "travelHistory": user.travelHistory.map
+            {
+                travel in
                 [
                     "name": travel.name,
                     "dateVisited": travel.dateVisited
@@ -41,35 +45,43 @@ class UserService {
         }
     }
     
-    // MARK: - Get User
-    func getUser(userID: String, completion: @escaping (Result<UserModel, Error>) -> Void) {
-        db.collection("users").document(userID).getDocument { document, error in
-            if let error = error {
+    // get users
+    func getUser(userID: String, completion: @escaping (Result<UserModel, Error>) -> Void)
+    {
+        db.collection("users").document(userID).getDocument
+            {
+                document, error in
+                if let error = error {
                 completion(.failure(error))
                 return
             }
             
-            guard let document = document, document.exists, let data = document.data() else {
-                completion(.failure(NSError(domain: "UserServiceError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Kullanıcı bulunamadı."])))
+            guard let document = document, document.exists, let data = document.data()
+            else
+            {
+                completion(.failure(NSError(domain: "UserServiceError", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not found."])))
                 return
             }
             
-            // Convert Firestore's Timestamp to Date for registrationDate
+            // convert Firestore's Timestamp to Date for registrationDate
             let registrationDate = (data["registrationDate"] as? Timestamp)?.dateValue() ?? Date()
             
-            // Convert Firestore's Timestamp to Date for each dateVisited in travelHistory
-            let travelHistory: [Place] = (data["travelHistory"] as? [[String: Any]])?.compactMap { place in
+            // convert Firestore's Timestamp to Date for each dateVisited in travelHistory
+            let travelHistory: [Place] = (data["travelHistory"] as? [[String: Any]])?.compactMap
+                {
+                place in
                 guard
                     let name = place["name"] as? String,
                     let timestamp = place["dateVisited"] as? Timestamp
-                else {
+                else
+                {
                     return nil
                 }
                 let dateVisited = timestamp.dateValue()
                 return Place(name: name, dateVisited: dateVisited)
             } ?? []
             
-            // Decode the user data, now with Date conversions
+            // decode the user data, now with Date conversions
             let user = UserModel(
                 id: data["id"] as? String ?? "",
                 name: data["name"] as? String ?? "",

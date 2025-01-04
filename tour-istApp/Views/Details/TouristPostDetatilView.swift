@@ -3,7 +3,7 @@ import MapKit
 
 struct TouristPostDetailView: View
 {
-    // MARK: - Variables
+    // variables
     @State var post: PostModel
     @State private var coordinate = CLLocationCoordinate2D(latitude: 41.2867, longitude: 36.33)
     @State private var annotation: LocationAnnotation?
@@ -15,7 +15,7 @@ struct TouristPostDetailView: View
     @State private var alertMessage = ""
     @State private var isFullDetailsPresented = false
 
-    // MARK: - Body
+    // body
     var body: some View
     {
         GeometryReader
@@ -48,7 +48,7 @@ struct TouristPostDetailView: View
             }
             .sheet(isPresented: $isFullDetailsPresented)
             {
-                FullDetailsSheet(isFullDetailsPresented: $isFullDetailsPresented, post: post)
+                FullDetailsPage(isFullDetailsPresented: $isFullDetailsPresented, post: post)
             }
             .sheet(isPresented: $showDeletePostAlertView)
             {
@@ -57,7 +57,7 @@ struct TouristPostDetailView: View
         }
     }
 
-    // MARK: - Geocode the Location
+    // geocode the location
     private func geocodeLocation(_ location: String)
     {
         let geocoder = CLGeocoder()
@@ -78,15 +78,15 @@ struct TouristPostDetailView: View
         }
     }
     
-    // MARK: - Post Details View
+    // post details view
     private func postDetailsView(geometry: GeometryProxy) -> some View
     {
         VStack(alignment: .leading)
         {
             HStack(spacing: 16)
             {
-                postInfo
-                postImage
+                postInfoView
+                postImageView
             }
             .frame(maxWidth: .infinity, maxHeight: geometry.size.height * 0.4)
             .padding(.bottom, 20)
@@ -94,8 +94,8 @@ struct TouristPostDetailView: View
         .frame(maxWidth: .infinity)
     }
 
-    // MARK: - Post Information
-    private var postInfo: some View
+    // post information view
+    private var postInfoView: some View
     {
         VStack(alignment: .leading, spacing: 10)
         {
@@ -141,8 +141,8 @@ struct TouristPostDetailView: View
         }
     }
 
-    // MARK: - Post Image
-    private var postImage: some View
+    // post image view
+    private var postImageView: some View
     {
         Group
         {
@@ -167,7 +167,7 @@ struct TouristPostDetailView: View
         }
     }
 
-    // MARK: - Map View
+    // map view
     private func mapView(geometry: GeometryProxy) -> some View
     {
         Map(coordinateRegion: .constant(MKCoordinateRegion(
@@ -183,7 +183,7 @@ struct TouristPostDetailView: View
         .padding(.top, 10)
     }
 
-    // MARK: - Action Buttons View
+    // action buttons view
     private func actionButtonsView(geometry: GeometryProxy) -> some View
     {
         HStack(spacing: 0)
@@ -202,7 +202,7 @@ struct TouristPostDetailView: View
         .frame(maxWidth: 300, maxHeight: 100)
     }
 
-    // MARK: - Delete Button
+    // delete button
     private var deleteButton: some View
     {
         Button(action: {
@@ -226,12 +226,11 @@ struct TouristPostDetailView: View
             )
         }
         .overlay(
-            // Eğer işlem devam ediyorsa, ProgressView göster
             isLoading ? AnyView(ProgressView().progressViewStyle(CircularProgressViewStyle()).scaleEffect(2).frame(maxWidth: .infinity, maxHeight: .infinity)) : AnyView(EmptyView())
         )
     }
 
-    // MARK: - Edit Button
+    // edit button
     private var editButton: some View
     {
         Button(action:
@@ -247,7 +246,7 @@ struct TouristPostDetailView: View
         .background(Color.blue)
     }
     
-    // MARK: - Delete Post Alert View
+    // delete post alert view
     private func deletePostAlertView() -> some View
     {
         VStack(spacing: 20)
@@ -285,7 +284,7 @@ struct TouristPostDetailView: View
         }
     }
     
-    // MARK: - Edit Post View
+    // edit post view
     private func editPostView() -> some View
     {
         NavigationView
@@ -331,19 +330,21 @@ struct TouristPostDetailView: View
             })
         }
     }
-    // MARK: - Delete Post Function
+    
+    // delete post the function
     private func deletePost()
     {
-        // Gecikme ile ProgressView göstermeye başlıyoruz
         isLoading = true
         
-        // 2.5 saniye sonra silme işlemi gerçekleşecek
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) {
-            PostService.shared.deletePost(id: post.id) { result in
-                // Gecikme tamamlandıktan sonra, progress göstergesi kapatılır
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5)
+        {
+            PostService.shared.deletePost(id: post.id)
+            {
+                result in
                 isLoading = false
                 
-                switch result {
+                switch result
+                {
                 case .success:
                     alertMessage = "Gönderi başarıyla silindi."
                     showAlert = true
@@ -355,7 +356,7 @@ struct TouristPostDetailView: View
         }
     }
     
-    // MARK: - Save Button
+    // save button
     private var saveButton: some View
     {
         Button(action: {
@@ -369,7 +370,7 @@ struct TouristPostDetailView: View
                 case .success():
                     alertMessage = "Gönderi başarıyla güncellendi."
                     showAlert = true
-                    showEditView = false // Düzenleme ekranından çık
+                    showEditView = false
                 case .failure(let error):
                     alertMessage = "Güncelleme hatası: \(error.localizedDescription)"
                     showAlert = true

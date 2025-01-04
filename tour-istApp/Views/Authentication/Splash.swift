@@ -2,10 +2,10 @@ import SwiftUI
 
 struct Splash: View
 {    
-    // MARK: - Variables
+    // variables
     @State private var isActive: Bool = false
 
-    // MARK: - Body
+    // body
     var body: some View
     {
         ZStack
@@ -35,7 +35,7 @@ struct Splash: View
         }
     }
 
-    // MARK: - Logo View
+    // logo view
     private var logoView: some View
     {
         VStack

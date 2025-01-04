@@ -3,14 +3,14 @@ import FirebaseAuth
 
 struct LoginView: View
 {
-    // MARK: - Variables
+    // variables
     @State private var selectedUserType: UserType?
     @State private var email: String = ""
     @State private var password: String = ""
     @State private var userID: String?
     @State private var loginError: String?
     
-    // MARK: - Body
+    //body
     var body: some View
     {
         NavigationView
@@ -38,7 +38,7 @@ struct LoginView: View
         }
     }
     
-    // MARK: - Header View
+    // header
     private var headerView: some View
     {
         VStack(spacing: 10)
@@ -54,7 +54,7 @@ struct LoginView: View
         .padding(.top, 50)
     }
     
-    // MARK: - User Type Selection View
+    // user type selection view
     private var userTypeSelectionView: some View
     {
         VStack(spacing: 20)
@@ -87,7 +87,7 @@ struct LoginView: View
         }
     }
     
-    // MARK: - Login Form View
+    // login form view
     private var loginFormView: some View
     {
         VStack(spacing: 20)
@@ -130,7 +130,6 @@ struct LoginView: View
         }
     }
     
-    // MARK: - Navigation Link
     private var navigationLink: some View
     {
         NavigationLink(
@@ -146,7 +145,7 @@ struct LoginView: View
         }
     }
     
-    // MARK: - Login User Function
+    // login user the function
     private func loginUser()
     {
         Auth.auth().signIn(withEmail: email, password: password)
@@ -167,8 +166,7 @@ struct LoginView: View
     }
 }
 
-// MARK: - Preview
-
+// preview
 #Preview
 {
     LoginView()

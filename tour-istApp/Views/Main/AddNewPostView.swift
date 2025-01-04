@@ -3,9 +3,9 @@ import MapKit
 import FirebaseFirestore
 import FirebaseAuth
 
-struct AddNewPost: View
+struct AddNewPostView: View
 {
-    // MARK: - Properties
+    // properties
     @Binding var isPresented: Bool
 
     @State private var title: String = ""
@@ -23,7 +23,7 @@ struct AddNewPost: View
     @State private var isDatePickerVisible: Bool = false
     @State private var isMapViewPresented: Bool = false
 
-    // MARK: - Body
+    // body
     var body: some View
     {
         NavigationView
@@ -135,9 +135,11 @@ struct AddNewPost: View
                 .padding()
             }
         }
-        .sheet(isPresented: $isMapViewPresented) {
-            ZStack {
-                MapView() // Mevcut MapView'inizi kullanabilirsiniz.
+        .sheet(isPresented: $isMapViewPresented)
+        {
+            ZStack
+            {
+                MapView()
                 VStack {
                     HStack {
                         Spacer()
@@ -164,15 +166,17 @@ struct AddNewPost: View
         }
     }
 
-    private func savePost() {
-        if let priceValue = Double(price), !title.isEmpty, !description.isEmpty, !location.isEmpty {
-            // Oturum açmış kullanıcının ID'sini al
-            guard let ownerID = Auth.auth().currentUser?.uid else {
+    private func savePost()
+    {
+        if let priceValue = Double(price), !title.isEmpty, !description.isEmpty, !location.isEmpty
+        {
+            guard let ownerID = Auth.auth().currentUser?.uid
+            else
+            {
                 print("Kullanıcı oturumu açmamış.")
                 return
             }
 
-            // Post ekleme işlemi
             PostService.shared.addPost(
                 title: title,
                 description: description,
@@ -180,7 +184,9 @@ struct AddNewPost: View
                 location: location,
                 price: priceValue,
                 imageURL: imageUrl
-            ) { result in
+            )
+            {
+                result in
                 switch result {
                 case .success(let post):
                     print("Post başarıyla eklendi: \(post.title)")
@@ -189,15 +195,19 @@ struct AddNewPost: View
                     print("Post eklenirken hata oluştu: \(error.localizedDescription)")
                 }
             }
-        } else {
+        }
+        else
+        {
             print("Fiyat veya ilan bilgileri geçersiz.")
         }
     }
 
-    private func geocodeAddress(address: String) {
+    private func geocodeAddress(address: String)
+    {
         let geocoder = CLGeocoder()
         geocoder.geocodeAddressString(address) { (placemarks, error) in
-            if let error = error {
+            if let error = error
+            {
                 print("Geocoding error: \(error)")
                 self.coordinate = Coordinate(coordinate: CLLocationCoordinate2D(latitude: 41.2867, longitude: 36.33))
             } else if let placemark = placemarks?.first, let location = placemark.location {
@@ -206,7 +216,8 @@ struct AddNewPost: View
         }
     }
 
-    private func searchPlaces(query: String) {
+    private func searchPlaces(query: String)
+    {
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = query
 
@@ -223,7 +234,8 @@ struct AddNewPost: View
         }
     }
 
-    private func formattedDate(_ date: Date) -> String {
+    private func formattedDate(_ date: Date) -> String
+    {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
         return formatter.string(from: date)
@@ -231,5 +243,5 @@ struct AddNewPost: View
 }
 
 #Preview {
-    AddNewPost(isPresented: .constant(true))
+    AddNewPostView(isPresented: .constant(true))
 }

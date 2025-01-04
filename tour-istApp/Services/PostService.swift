@@ -4,18 +4,19 @@ import FirebaseAuth
 
 class PostService
 {
-    // MARK: - Properties and Instance
+    //properties
     static let shared = PostService()
     
+    //instances
     private var db = Firestore.firestore()
     private var posts: [PostModel] = []
     
-    // MARK: - Add Post
+    // add post
     func addPost(title: String, description: String, date: Date, location: String, price: Double, imageURL: String?, completion: @escaping (Result<PostModel, Error>) -> Void)
     {
         guard let ownerID = Auth.auth().currentUser?.uid else
         {
-            completion(.failure(NSError(domain: "PostServiceError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Kullanıcı oturumu açmamış."])))
+            completion(.failure(NSError(domain: "PostServiceError", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not log in."])))
             return
         }
 
@@ -44,7 +45,7 @@ class PostService
         }
     }
     
-    // MARK: - Get Posts
+    // get posts
     func getPosts(completion: @escaping (Result<[PostModel], Error>) -> Void)
     {
         guard let currentUserID = Auth.auth().currentUser?.uid else
@@ -93,7 +94,7 @@ class PostService
         }
     }
     
-    // MARK: - Update Post
+    // update post
     func updatePost(post: PostModel, completion: @escaping (Result<Void, Error>) -> Void)
     {
         let postData: [String: Any] =
@@ -124,7 +125,7 @@ class PostService
         }
     }
     
-    // MARK: - Delete Post
+    // delete post
     func deletePost(id: String, completion: @escaping (Result<Void, Error>) -> Void)
     {
         db.collection("posts").document(id).delete { error in
