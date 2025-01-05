@@ -3,15 +3,20 @@ import Combine
 
 struct LocationNewsView: View
 {
+    // properties
     @State private var location: String = ""
     @State private var news: [NewsItem] = []
     @State private var isLoading: Bool = false
     private let apiKey = "180207e5d3e9495cae41cd1473f80337"
 
-    var body: some View {
-        NavigationView {
-            VStack {
-                VStack(spacing: 16) {
+    var body: some View
+    {
+        NavigationView
+        {
+            VStack
+            {
+                VStack(spacing: 16)
+                {
                     TextField("Konum girin", text: $location)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
@@ -19,7 +24,8 @@ struct LocationNewsView: View
                         .cornerRadius(10)
                         .shadow(color: Color.gray.opacity(0.3), radius: 5, x: 0, y: 2)
 
-                    Button(action: fetchNews) {
+                    Button(action: fetchNews)
+                    {
                         Text("Konumla İlgili Haberleri Getir")
                             .fontWeight(.semibold)
                             .frame(maxWidth: .infinity)
@@ -32,17 +38,23 @@ struct LocationNewsView: View
                 }
                 .padding()
 
-                if isLoading {
+                if isLoading
+                {
                     ProgressView("Yükleniyor...")
                         .padding()
                 }
 
-                if news.isEmpty && !isLoading {
+                if news.isEmpty && !isLoading
+                {
                     Text("Haber bulunamadı, lütfen geçerli bir konum girin.")
                         .foregroundColor(.gray)
                         .padding()
-                } else {
-                    List(news) { item in
+                }
+                else
+                {
+                    List(news)
+                    {
+                        item in
                         VStack(alignment: .leading, spacing: 8) {
                             Text(item.title)
                                 .font(.headline)
@@ -65,7 +77,9 @@ struct LocationNewsView: View
         }
     }
 
-    func fetchNews() {
+    // fetch news
+    func fetchNews()
+    {
         guard !location.isEmpty else { return }
         isLoading = true
 
@@ -74,42 +88,55 @@ struct LocationNewsView: View
         
         guard let url = URL(string: urlString) else { return }
 
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            DispatchQueue.main.async {
+        URLSession.shared.dataTask(with: url)
+        {
+            data, response, error in
+            DispatchQueue.main.async
+            {
                 isLoading = false
             }
 
             guard let data = data, error == nil else { return }
             
-            do {
+            do
+            {
                 let result = try JSONDecoder().decode(NewsAPIResponse.self, from: data)
                 DispatchQueue.main.async {
                     news = result.articles.map {
                         NewsItem(title: $0.title, description: $0.description ?? "Açıklama bulunamadı")
                     }
                 }
-            } catch {
+            }
+            catch
+            {
                 print("Hata: \(error)")
             }
         }.resume()
     }
 }
 
-struct NewsItem: Identifiable {
+// news item
+struct NewsItem: Identifiable
+{
     let id = UUID()
     let title: String
     let description: String
 }
 
-struct NewsAPIResponse: Codable {
+// news array
+struct NewsAPIResponse: Codable
+{
     let articles: [Article]
 }
 
-struct Article: Codable {
+//articles item
+struct Article: Codable
+{
     let title: String
     let description: String?
 }
 
-#Preview {
+#Preview
+{
     LocationNewsView()
 }

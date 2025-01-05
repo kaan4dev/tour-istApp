@@ -1,34 +1,46 @@
 import SwiftUI
 import FirebaseAuth
 
-struct MainTabView: View {
+struct MainTabView: View
+{
+    // properties
     @State private var selectedTab = 0
     @State private var showCreatePost = false
-    @State private var user: UserModel? // Kullanıcı bilgilerini tutacak değişken
-    @State private var isLoading = true // Yükleniyor durumu için değişken
+    @State private var user: UserModel?
+    @State private var isLoading = true
 
-    var userType: UserType? // Kullanıcı tipi değişkeni
+    //instances
+    var userType: UserType?
 
-    var body: some View {
-        TabView(selection: $selectedTab) {
+    var body: some View
+    {
+        TabView(selection: $selectedTab)
+        {
             HomeView(user: user)
-                .tabItem {
+                .tabItem
+                {
                     Image(systemName: "house")
                     Text("Ana Sayfa")
                 }
                 .tag(0)
 
-            Group {
-                if userType == .guide {
+            Group
+            {
+                if userType == .guide
+                {
                     GuideTravelHistory()
-                        .tabItem {
+                        .tabItem
+                    {
                             Image(systemName: "arrow.3.trianglepath")
                             Text("Geçmiş")
-                        }
+                    }
                         .tag(1)
-                } else {
+                }
+                else
+                {
                     MapView()
-                        .tabItem {
+                        .tabItem
+                        {
                             Image(systemName: "map")
                             Text("Araçlar")
                         }
@@ -37,23 +49,31 @@ struct MainTabView: View {
                 }
             }
 
-            Group {
-                if userType == .tourist {
+            Group
+            {
+                if userType == .tourist
+                {
                     Color.clear
-                        .tabItem {
+                        .tabItem
+                        {
                             Image(systemName: "plus.app")
                             Text("Yeni İlan")
                         }
                         .tag(2)
-                        .onAppear {
+                        .onAppear
+                        {
                             showCreatePost = true
                         }
-                        .sheet(isPresented: $showCreatePost, onDismiss: {
+                        .sheet(isPresented: $showCreatePost, onDismiss:
+                        {
                             selectedTab = 0
-                        }) {
+                        })
+                        {
                             AddNewPostView(isPresented: $showCreatePost)
                         }
-                } else {
+                }
+                else
+                {
                     MapView()
                         .tabItem {
                             Image(systemName: "map")
@@ -65,23 +85,30 @@ struct MainTabView: View {
             }
 
             MessageView()
-                .tabItem {
+                .tabItem
+                {
                     Image(systemName: "message")
                     Text("Mesajlar")
                 }
                 .tag(3)
 
-            Group {
-                if userType == .guide {
+            Group
+            {
+                if userType == .guide
+                {
                     LocationNewsView()
-                        .tabItem {
+                        .tabItem
+                        {
                             Image(systemName: "newspaper")
                             Text("Haberler")
                         }
                         .tag(4)
-                } else {
+                }
+                else
+                {
                     TouristLastTabViewScreen()
-                        .tabItem {
+                        .tabItem
+                        {
                             Image(systemName: "text.book.closed")
                             Text("Araştır")
                         }
@@ -92,12 +119,14 @@ struct MainTabView: View {
         .accentColor(.blue)
         .background(Color(.systemBackground))
         .edgesIgnoringSafeArea(.all)
-        .onAppear(perform: loadUserData) // Kullanıcı verisini yükle
-        .alert(isPresented: $isLoading) {
+        .onAppear(perform: loadUserData)
+        .alert(isPresented: $isLoading)
+        {
             Alert(title: Text("Yükleniyor"), message: Text("Kullanıcı verileri yükleniyor..."), dismissButton: .default(Text("Tamam")))
         }
     }
 
+    // load user data func
     private func loadUserData() {
         guard let currentUserID = Auth.auth().currentUser?.uid else {
             isLoading = false
@@ -107,15 +136,16 @@ struct MainTabView: View {
         UserService.shared.getUser(userID: currentUserID) { result in
             switch result {
             case .success(let fetchedUser):
-                self.user = fetchedUser // Kullanıcı verisini state değişkenine ata
+                self.user = fetchedUser
             case .failure(let error):
                 print("Kullanıcı verisi yüklenirken hata: \(error.localizedDescription)")
             }
-            isLoading = false // Yükleme tamamlandı
+            isLoading = false
         }
     }
 }
 
-#Preview {
-    MainTabView(userType: .tourist) // Test için bir kullanıcı tipi ekleyin
+#Preview
+{
+    MainTabView(userType: .tourist)
 }

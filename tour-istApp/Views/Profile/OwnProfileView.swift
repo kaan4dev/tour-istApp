@@ -1,21 +1,32 @@
 import SwiftUI
 
-struct OwnProfileView: View {
+struct OwnProfileView: View
+{
+    // properties
     var user: UserModel
 
-    var body: some View {
-        ScrollView {
-            VStack(spacing: 20) {
-                HStack {
-                    if let profileImageURL = user.imageURL, let url = URL(string: profileImageURL) {
-                        AsyncImage(url: url) { image in
+    var body: some View
+    {
+        ScrollView
+        {
+            VStack(spacing: 20)
+            {
+                HStack
+                {
+                    if let profileImageURL = user.imageURL, let url = URL(string: profileImageURL)
+                    {
+                        AsyncImage(url: url)
+                        {
+                            image in
                             image
                                 .resizable()
                                 .scaledToFill()
                                 .clipShape(Circle())
                                 .frame(width: 100, height: 100)
                                 .overlay(Circle().stroke(Color.blue, lineWidth: 3))
-                        } placeholder: {
+                        }
+                        placeholder:
+                        {
                             ProgressView()
                                 .frame(width: 50, height: 50)
                         }
@@ -23,7 +34,8 @@ struct OwnProfileView: View {
 
                     Spacer()
 
-                    VStack(alignment: .leading, spacing: 8) {
+                    VStack(alignment: .leading, spacing: 8)
+                    {
                         Text(user.name)
                             .font(.title)
                             .bold()
@@ -49,11 +61,12 @@ struct OwnProfileView: View {
 
                 Divider()
 
-                VStack(alignment: .leading, spacing: 20) {
+                VStack(alignment: .leading, spacing: 20)
+                {
                     InfoField(label: "Katılma Tarihi", value: formattedDate(user.registrationDate))
                     InfoField(label: "İlan Sayısı", value: "\(user.usersPostCount)")
                     InfoField(label: "Aldığı Yorumlar", value: "\(user.usersCommentCount)")
-                    InfoField(label: "Değerlendirme Puanı", value: String(format: "%.1f", Double(user.usersRating) / 10.0)) // Assuming a rating scale of 1-10
+                    InfoField(label: "Değerlendirme Puanı", value: String(format: "%.1f", Double(user.usersRating) / 10.0))
                     InfoField(label: "Son Gezdiği Yerler", value: user.travelHistory.map { $0.name }.joined(separator: ", "))
                     InfoField(label: "Konum", value: user.usersLocation)
                     InfoField(label: "Eğitim Seviyesi", value: user.usersDegree)
@@ -62,14 +75,15 @@ struct OwnProfileView: View {
                 .padding(.horizontal)
             }
             .padding()
-            .background(Color(UIColor.systemBackground)) // Arka plan rengi ayarlandı
+            .background(Color(UIColor.systemBackground))
             .cornerRadius(15)
             .shadow(color: Color.black.opacity(0.1), radius: 5, x: 0, y: 2)
         }
     }
 
-    // Date formatter to display the date in a user-friendly format
-    func formattedDate(_ date: Date) -> String {
+    // formatted data
+    func formattedDate(_ date: Date) -> String
+    {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
         dateFormatter.timeStyle = .none
@@ -77,12 +91,16 @@ struct OwnProfileView: View {
     }
 }
 
-struct InfoField: View {
+
+struct InfoField: View
+{
     var label: String
     var value: String
 
-    var body: some View {
-        HStack {
+    var body: some View
+    {
+        HStack
+        {
             Text(label)
                 .font(.headline)
                 .padding(.vertical, 5)
@@ -103,7 +121,8 @@ struct InfoField: View {
     }
 }
 
-#Preview {
+#Preview
+{
     OwnProfileView(user: UserModel(
         id: UUID().uuidString,
         name: "Justin Bieber",

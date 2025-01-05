@@ -1,12 +1,15 @@
 import SwiftUI
 
-struct Message: Identifiable {
+struct Message: Identifiable
+{
     let id = UUID()
     let sender: String
     let text: String
 }
 
-struct MessageView: View {
+
+struct MessageView: View
+{
     let messages: [Message] =
     [
         Message(sender: "Ali", text: "Merhaba! Nasılsın?"),

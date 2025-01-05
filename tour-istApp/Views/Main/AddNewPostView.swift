@@ -46,14 +46,19 @@ struct AddNewPostView: View
                         .onChange(of: location) { newValue in
                             geocodeAddress(address: newValue)
                         }
-                        .overlay {
-                            if isSearching {
-                                List(searchResults, id: \.self) { item in
+                        .overlay
+                        {
+                            if isSearching
+                            {
+                                List(searchResults, id: \.self)
+                                {
+                                    item in
                                     Button(action: {
                                         self.location = item.name ?? ""
                                         self.coordinate = Coordinate(coordinate: item.placemark.coordinate)
                                         self.isSearching = false
-                                    }) {
+                                    })
+                                    {
                                         Text(item.name ?? "")
                                             .padding()
                                             .background(Color(UIColor.systemGray5))
@@ -71,8 +76,10 @@ struct AddNewPostView: View
 
                         Button(action: {
                             isDatePickerVisible.toggle()
-                        }) {
-                            HStack {
+                        })
+                        {
+                            HStack
+                            {
                                 Text("Tarih: \(formattedDate(date))")
                                     .foregroundColor(.primary)
                                 Spacer()
@@ -84,7 +91,8 @@ struct AddNewPostView: View
                             .cornerRadius(8)
                         }
 
-                        if isDatePickerVisible {
+                        if isDatePickerVisible
+                        {
                             DatePicker("Tarih", selection: $date, displayedComponents: .date)
                                 .datePickerStyle(GraphicalDatePickerStyle())
                                 .frame(maxHeight: 400)
@@ -202,6 +210,7 @@ struct AddNewPostView: View
         }
     }
 
+    // geocode the adress
     private func geocodeAddress(address: String)
     {
         let geocoder = CLGeocoder()
@@ -216,6 +225,7 @@ struct AddNewPostView: View
         }
     }
 
+    // search places func
     private func searchPlaces(query: String)
     {
         let request = MKLocalSearch.Request()
@@ -242,6 +252,7 @@ struct AddNewPostView: View
     }
 }
 
-#Preview {
+#Preview
+{
     AddNewPostView(isPresented: .constant(true))
 }

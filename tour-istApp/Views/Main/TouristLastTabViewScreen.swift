@@ -1,15 +1,24 @@
 import SwiftUI
 
-struct TouristLastTabViewScreen: View {
+struct TouristLastTabViewScreen: View
+{
+    // properties
     @State private var isActive: Bool = false
 
-    var body: some View {
-        ZStack {
-            if isActive {
-                NavigationView {
-                    VStack(spacing: 0) {
-                        NavigationLink(destination: TouristCityGuideView()) {
-                            VStack {
+    var body: some View
+    {
+        ZStack
+        {
+            if isActive
+            {
+                NavigationView
+                {
+                    VStack(spacing: 0)
+                    {
+                        NavigationLink(destination: TouristCityGuideView())
+                        {
+                            VStack
+                            {
                                 Image("travelpic2")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
@@ -31,8 +40,10 @@ struct TouristLastTabViewScreen: View {
                         }
                         .buttonStyle(PlainButtonStyle())
 
-                        NavigationLink(destination: LocationNewsView()) {
-                            VStack {
+                        NavigationLink(destination: LocationNewsView())
+                        {
+                            VStack
+                            {
                                 Image("travelPic")
                                     .resizable()
                                     .aspectRatio(contentMode: .fill)
@@ -61,10 +72,14 @@ struct TouristLastTabViewScreen: View {
                             .edgesIgnoringSafeArea(.all)
                     )
                 }
-            } else {
+            }
+            else
+            {
                 SplashScreen()
-                    .onAppear {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    .onAppear
+                    {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1)
+                        {
                             withAnimation {
                                 isActive = true
                             }
@@ -75,12 +90,17 @@ struct TouristLastTabViewScreen: View {
     }
 }
 
-struct SplashScreen: View {
-    var body: some View {
-        ZStack {
+// splash screen - select screen
+struct SplashScreen: View
+{
+    var body: some View
+    {
+        ZStack
+        {
             Color.blue.opacity(0.5)
                 .edgesIgnoringSafeArea(.all)
-            VStack {
+            VStack
+            {
                 Text("Şehirde kullanmak istediğiniz sanal rehber aracını seçin.")
                     .font(.system(size: 25, weight: .bold))
                     .foregroundColor(.white)
@@ -96,6 +116,7 @@ struct SplashScreen: View {
     }
 }
 
-#Preview {
+#Preview
+{
     TouristLastTabViewScreen()
 }

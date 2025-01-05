@@ -1,9 +1,9 @@
 import SwiftUI
 import MapKit
 
-// MARK: Properties
 struct MapView: View
 {
+    // properties
     @StateObject private var locationManager = LocationManager()
     @State private var searchQuery: String = ""
     @State private var selectedLocations: [CLLocationCoordinate2D] = []
@@ -14,12 +14,13 @@ struct MapView: View
 
     @Environment(\.colorScheme) var colorScheme
 
-    // MARK: Body
     var body: some View
     {
         NavigationView
         {
-            GeometryReader { geometry in
+            GeometryReader
+            {
+                geometry in
                 ZStack(alignment: .top)
                 {
                     Map(coordinateRegion: $locationManager.region)
@@ -102,17 +103,16 @@ struct MapView: View
         }
     }
 
-    // MARK: Location Manager
+    // location manager class
     class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate
     {
-        // MARK: Properties
+        // properties
         private let locationManager = CLLocationManager()
         @Published var region: MKCoordinateRegion
         @Published var error: Error?
         
         var location: CLLocation?
 
-        // MARK: Override
         override init()
         {
             self.region = MKCoordinateRegion(
@@ -141,7 +141,7 @@ struct MapView: View
         }
     }
 
-    // MARK: Search Location
+    // search location func
     func searchLocation(query: String)
     {
         let searchRequest = MKLocalSearch.Request()
@@ -161,7 +161,7 @@ struct MapView: View
     }
 }
 
-// MARK: Distance Sheet
+// distance sheet
 struct DistanceSheet: View
 {
     @Binding var city1: String
@@ -252,14 +252,18 @@ struct DistanceSheet: View
         }
     }
     
-    // MARK: Calculate Distance
+    // calculate distance
     func calculateDistances()
     {
         isCalculating = true
-        searchLocation(query: city1, isFirstCity: true) { success1 in
+        searchLocation(query: city1, isFirstCity: true)
+        {
+            success1 in
             if success1
             {
-                searchLocation(query: city2, isFirstCity: false) { success2 in
+                searchLocation(query: city2, isFirstCity: false)
+                {
+                    success2 in
                     if success2 && selectedLocations.count == 2
                     {
                         calculateDistance()
