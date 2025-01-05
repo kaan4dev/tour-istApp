@@ -31,11 +31,13 @@
 		7F729C362CB6E30800104A7D /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 7F729C352CB6E30800104A7D /* FirebaseStorage */; };
 		7F729C382CB6E30800104A7D /* FirebaseStorageCombine-Community in Frameworks */ = {isa = PBXBuildFile; productRef = 7F729C372CB6E30800104A7D /* FirebaseStorageCombine-Community */; };
 		7F729C3A2CB6E30800104A7D /* FirebaseVertexAI-Preview in Frameworks */ = {isa = PBXBuildFile; productRef = 7F729C392CB6E30800104A7D /* FirebaseVertexAI-Preview */; };
+		7FBAB1772D2AE60C009EBE17 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 7FBAB1762D2AE604009EBE17 /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		7F5DF3C72CB9A9780010F4B4 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		7F9B6F122CAC487B002CE6A3 /* tour-istApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "tour-istApp.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7FBAB1762D2AE604009EBE17 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -83,6 +85,7 @@
 		7F9B6F092CAC487B002CE6A3 = {
 			isa = PBXGroup;
 			children = (
+				7FBAB1762D2AE604009EBE17 /* .gitignore */,
 				7F5DF3C72CB9A9780010F4B4 /* GoogleService-Info.plist */,
 				7F9B6F142CAC487B002CE6A3 /* tour-istApp */,
 				7F9B6F132CAC487B002CE6A3 /* Products */,
@@ -187,6 +190,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7FBAB1772D2AE60C009EBE17 /* .gitignore in Resources */,
 				7F5DF3C82CB9A9780010F4B4 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
