@@ -8,6 +8,7 @@ struct GuidePostDetailView: View
     @State private var coordinate = CLLocationCoordinate2D(latitude: 41.2867, longitude: 36.33)
     @State private var annotation: LocationAnnotation?
     @State private var isFullDetailsPresented = false
+    @State private var ownerName: String = "Loading..."
     
     // body
     var body: some View
@@ -98,7 +99,7 @@ struct GuidePostDetailView: View
                     .font(.headline)
                     .foregroundColor(.blue)
                 
-                Text("Sahibi: \(post.ownerID)")
+                Text("Sahibi: \(ownerName)")
                     .font(.body)
                     .foregroundColor(.secondary)
             }
@@ -227,19 +228,28 @@ struct GuidePostDetailView: View
     // phone button
     private var phoneButton: some View
     {
-        Button(action: {
-            PostService.shared.fetchOwnerPhoneNumber(ownerID: post.ownerID) { phoneNumber in
-                if let phoneNumber = phoneNumber,
-                   let url = URL(string: "tel://\(phoneNumber)")
+        Button(action:
+            {
+                PostService.shared.fetchPostsOwnerDetails(ownerID: post.ownerID)
                 {
-                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                    name, phoneNumber in
+                    if let name = name, let phoneNumber = phoneNumber
+                    {
+                        if let url = URL(string: "tel://\(phoneNumber)")
+                        {
+                            UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        }
+                        else
+                        {
+                            print("Invalid phone URL.")
+                        }
+                    }
+                    else
+                    {
+                        print("Failed to fetch owner details.")
+                    }
                 }
-                else
-                {
-                    print("Failed to fetch phone number.")
-                }
-            }
-        })
+            })
         {
             VStack
             {

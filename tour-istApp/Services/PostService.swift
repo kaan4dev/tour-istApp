@@ -144,27 +144,30 @@ class PostService
         }
     }
 
-    // Fetch owner phone number
-    func fetchOwnerPhoneNumber(ownerID: String, completion: @escaping (String?) -> Void)
-    {
-        db.collection("users").document(ownerID).getDocument { document, error in
-            if let error = error
+    // Fetch post owner's name and phone number
+        func fetchPostsOwnerDetails(ownerID: String, completion: @escaping (String?, String?) -> Void)
+        {
+            db.collection("users").document(ownerID).getDocument
             {
-                print("Error fetching user: \(error.localizedDescription)")
-                completion(nil)
-                return
-            }
-            
-            if let document = document, document.exists,
-               let data = document.data(),
-               let phoneNumber = data["phoneNumber"] as? String
-            {
-                completion(phoneNumber)
-            }
-            else
-            {
-                completion(nil)
+                document, error in
+                if let error = error
+                {
+                    print("Error fetching user details: \(error.localizedDescription)")
+                    completion(nil, nil)
+                    return
+                }
+                
+                if let document = document, document.exists,
+                   let data = document.data()
+                {
+                    let name = data["name"] as? String
+                    let phoneNumber = data["phoneNumber"] as? String
+                    completion(name, phoneNumber)
+                }
+                else
+                {
+                    completion(nil, nil)
+                }
             }
         }
-    }
 }

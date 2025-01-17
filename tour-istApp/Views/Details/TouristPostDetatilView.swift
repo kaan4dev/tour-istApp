@@ -14,6 +14,8 @@ struct TouristPostDetailView: View
     @State private var showAlert = false
     @State private var alertMessage = ""
     @State private var isFullDetailsPresented = false
+    @State private var ownerName: String = "Loading..."
+
 
     // body
     var body: some View
@@ -121,7 +123,7 @@ struct TouristPostDetailView: View
                     .font(.headline)
                     .foregroundColor(.blue)
                 
-                Text("Sahibi: \(post.ownerID)")
+                Text("Sahibi: \(ownerName)")
                     .font(.body)
                     .foregroundColor(.secondary)
             }
