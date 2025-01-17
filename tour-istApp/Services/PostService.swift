@@ -4,19 +4,19 @@ import FirebaseAuth
 
 class PostService
 {
-    //properties
+    // Properties
     static let shared = PostService()
     
-    //instances
+    // Instances
     private var db = Firestore.firestore()
     private var posts: [PostModel] = []
     
-    // add post
+    // Add post
     func addPost(title: String, description: String, date: Date, location: String, price: Double, imageURL: String?, completion: @escaping (Result<PostModel, Error>) -> Void)
     {
         guard let ownerID = Auth.auth().currentUser?.uid else
         {
-            completion(.failure(NSError(domain: "PostServiceError", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not log in."])))
+            completion(.failure(NSError(domain: "PostServiceError", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not logged in."])))
             return
         }
 
@@ -45,12 +45,12 @@ class PostService
         }
     }
     
-    // get posts
+    // Get posts
     func getPosts(completion: @escaping (Result<[PostModel], Error>) -> Void)
     {
         guard let currentUserID = Auth.auth().currentUser?.uid else
         {
-            completion(.failure(NSError(domain: "PostServiceError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Kullanıcı oturumu açmamış."])))
+            completion(.failure(NSError(domain: "PostServiceError", code: 0, userInfo: [NSLocalizedDescriptionKey: "User not logged in."])))
             return
         }
         
@@ -59,14 +59,14 @@ class PostService
             (snapshot, error) in
             if let error = error
             {
-                print("Hata: \(error.localizedDescription)")
+                print("Error: \(error.localizedDescription)")
                 completion(.failure(error))
                 return
             }
             
             guard let documents = snapshot?.documents else
             {
-                print("Can't find any posts.")
+                print("No posts found.")
                 completion(.success([]))
                 return
             }
@@ -85,7 +85,7 @@ class PostService
                       let id = data["id"] as? String,
                       let ownerID = data["ownerID"] as? String else
                 {
-                    print("Veri çekilemedi: \(data)")
+                    print("Failed to fetch data: \(data)")
                     return nil
                 }
                 return PostModel(id: id, title: title, description: description, ownerID: ownerID, date: date, location: location, isActive: isActive, price: price, imageURL: data["imageURL"] as? String)
@@ -94,7 +94,7 @@ class PostService
         }
     }
     
-    // update post
+    // Update post
     func updatePost(post: PostModel, completion: @escaping (Result<Void, Error>) -> Void)
     {
         let postData: [String: Any] =
@@ -125,7 +125,7 @@ class PostService
         }
     }
     
-    // delete post
+    // Delete post
     func deletePost(id: String, completion: @escaping (Result<Void, Error>) -> Void)
     {
         db.collection("posts").document(id).delete { error in
@@ -140,6 +140,30 @@ class PostService
                     self.posts.remove(at: index)
                 }
                 completion(.success(()))
+            }
+        }
+    }
+
+    // Fetch owner phone number
+    func fetchOwnerPhoneNumber(ownerID: String, completion: @escaping (String?) -> Void)
+    {
+        db.collection("users").document(ownerID).getDocument { document, error in
+            if let error = error
+            {
+                print("Error fetching user: \(error.localizedDescription)")
+                completion(nil)
+                return
+            }
+            
+            if let document = document, document.exists,
+               let data = document.data(),
+               let phoneNumber = data["phoneNumber"] as? String
+            {
+                completion(phoneNumber)
+            }
+            else
+            {
+                completion(nil)
             }
         }
     }

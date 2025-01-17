@@ -178,7 +178,7 @@ struct AddNewPostView: View
     {
         if let priceValue = Double(price), !title.isEmpty, !description.isEmpty, !location.isEmpty
         {
-            guard let ownerID = Auth.auth().currentUser?.uid
+            guard (Auth.auth().currentUser?.uid) != nil
             else
             {
                 print("Kullanıcı oturumu açmamış.")

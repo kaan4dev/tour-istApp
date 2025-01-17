@@ -227,7 +227,19 @@ struct GuidePostDetailView: View
     // phone button
     private var phoneButton: some View
     {
-        Button(action: {})
+        Button(action: {
+            PostService.shared.fetchOwnerPhoneNumber(ownerID: post.ownerID) { phoneNumber in
+                if let phoneNumber = phoneNumber,
+                   let url = URL(string: "tel://\(phoneNumber)")
+                {
+                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                }
+                else
+                {
+                    print("Failed to fetch phone number.")
+                }
+            }
+        })
         {
             VStack
             {
@@ -243,6 +255,7 @@ struct GuidePostDetailView: View
         }
         .padding()
         .background(Color.blue)
+        .cornerRadius(10)
     }
 }
 
