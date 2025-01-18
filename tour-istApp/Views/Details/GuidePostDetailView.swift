@@ -28,11 +28,22 @@ struct GuidePostDetailView: View
             .onAppear
             {
                 geocodeLocation(post.location)
+                fetchOwnerName()
             }
         }
         .sheet(isPresented: $isFullDetailsPresented)
         {
             FullDetailsPage(isFullDetailsPresented: $isFullDetailsPresented, post: post)
+        }
+    }
+
+    private func fetchOwnerName() {
+        PostService.shared.fetchPostsOwnerDetails(ownerID: post.ownerID) { name, _ in
+            if let name = name {
+                DispatchQueue.main.async {
+                    self.ownerName = name
+                }
+            }
         }
     }
 
@@ -273,4 +284,4 @@ struct GuidePostDetailView: View
 {
     GuidePostDetailView(post: PostModel(id: "1", title: "İstanbul Turu", description: "Detaylı bir İstanbul turu.", ownerID: "10005", date: Date(), location: "İstanbul", isActive: true, price: 1200, imageURL: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQa8BEZilCGiEX2lhzGPeR__yCxH2awTwSMKx3NqyGP9i6uiuv2T8ddzOlUpzyP1u36wcQ&usqp=CAU"))
 }
-    
+ 

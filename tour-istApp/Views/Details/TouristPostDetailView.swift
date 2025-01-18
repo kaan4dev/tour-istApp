@@ -16,7 +16,6 @@ struct TouristPostDetailView: View
     @State private var isFullDetailsPresented = false
     @State private var ownerName: String = "Loading..."
 
-
     // body
     var body: some View
     {
@@ -26,15 +25,14 @@ struct TouristPostDetailView: View
             VStack(spacing: 0)
             {
                 postDetailsView(geometry: geometry)
-                
                 mapView(geometry: geometry)
-                
                 actionButtonsView(geometry: geometry)
             }
             .padding()
             .onAppear
             {
                 geocodeLocation(post.location)
+                fetchOwnerName()
             }
             .onAppear
             {
@@ -55,6 +53,20 @@ struct TouristPostDetailView: View
             .sheet(isPresented: $showDeletePostAlertView)
             {
                 deletePostAlertView()
+            }
+        }
+    }
+
+    private func fetchOwnerName()
+    {
+        PostService.shared.fetchPostsOwnerDetails(ownerID: post.ownerID)
+        { name, _ in
+            if let name = name
+            {
+                DispatchQueue.main.async
+                {
+                    self.ownerName = name
+                }
             }
         }
     }
@@ -150,7 +162,8 @@ struct TouristPostDetailView: View
         {
             if let imageURL = post.imageURL, let url = URL(string: imageURL)
             {
-                AsyncImage(url: url) { image in
+                AsyncImage(url: url)
+                { image in
                     image
                         .resizable()
                         .scaledToFill()
@@ -175,7 +188,8 @@ struct TouristPostDetailView: View
         Map(coordinateRegion: .constant(MKCoordinateRegion(
             center: coordinate,
             span: MKCoordinateSpan(latitudeDelta: 0.03, longitudeDelta: 0.03))),
-            annotationItems: annotation != nil ? [annotation!] : []) { location in
+            annotationItems: annotation != nil ? [annotation!] : [])
+        { location in
             MapPin(coordinate: location.coordinate, tint: .blue)
         }
         .frame(height: geometry.size.height * 0.4)
@@ -207,7 +221,8 @@ struct TouristPostDetailView: View
     // delete button
     private var deleteButton: some View
     {
-        Button(action: {
+        Button(action:
+        {
             showDeletePostAlertView = true
         })
         {
@@ -217,11 +232,13 @@ struct TouristPostDetailView: View
         }
         .padding()
         .background(Color.blue)
-        .alert(isPresented: $showDeletePostAlertView) {
+        .alert(isPresented: $showDeletePostAlertView)
+        {
             Alert(
                 title: Text("Gönderiyi Sil"),
                 message: Text("Bu gönderiyi tamamen silmek istediğinize emin misiniz?"),
-                primaryButton: .destructive(Text("Sil")) {
+                primaryButton: .destructive(Text("Sil"))
+                {
                     deletePost()
                 },
                 secondaryButton: .cancel(Text("Vazgeç"))
@@ -361,7 +378,8 @@ struct TouristPostDetailView: View
     // save button
     private var saveButton: some View
     {
-        Button(action: {
+        Button(action:
+        {
             let updatedPost = PostModel(id: post.id, title: post.title, description: post.description, ownerID: post.ownerID, date: post.date, location: post.location, isActive: post.isActive, price: post.price, imageURL: post.imageURL)
             
             PostService.shared.updatePost(post: updatedPost)
